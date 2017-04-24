@@ -31,6 +31,7 @@ public class MST {
 				int weight = tmp.weight;
 				PartialTree.Arc A = new PartialTree.Arc(v, v2, weight);
 				
+				
 				P.insert(A);
 				
 			}
@@ -39,6 +40,7 @@ public class MST {
 			L.append(T);
 			
 		}
+		
 		return L;
 		
 		
@@ -55,29 +57,40 @@ public class MST {
 	 */
 	public static ArrayList<PartialTree.Arc> execute(PartialTreeList ptlist) {
 		ArrayList<PartialTree.Arc> component = new ArrayList<PartialTree.Arc>();
-		while(!(ptlist.size()<2)){
+		
+		while(ptlist.size()>1){
 			PartialTree PTX = ptlist.remove();
 			MinHeap<PartialTree.Arc>PQX = PTX.getArcs();
 			PartialTree.Arc  a = PQX.getMin();
 			Vertex v1 = a.v1;
 			Vertex v2 = a.v2;
-			while(v2.parent == v1.parent){
-				PTX.getArcs().deleteMin();
-				a = PTX.getArcs().getMin();
+			MinHeap<PartialTree.Arc> temp = new MinHeap<PartialTree.Arc>();
+			temp.merge(PQX);
+			
+			while(v2.getRoot() == v1.getRoot()){
+				a = temp.deleteMin();
 				v1 = a.v1;
 				v2 = a.v2;
 			}
 			component.add(a);
-			PartialTree PTY = ptlist.remove();
-			while(PTY.getRoot()!= v2.parent){
-				PartialTree tmp = PTY;
+			
+			
+			PartialTree PTY = new PartialTree(null);
+			
+			int count = ptlist.size();
+			while(count!=0){
 				PTY = ptlist.remove();
-				ptlist.append(tmp);
-				
+				if(v2.getRoot() == PTY.getRoot()){
+					break;
+				}
+				ptlist.append(PTY);
+				count--;
 			}
+			
+		
 			MinHeap<PartialTree.Arc>PQY = PTY.getArcs();
 			PTX.merge(PTY);
-			PTX.getArcs().merge(PQY);
+			PQX.merge(PQY);
 			ptlist.append(PTX);
 			
 		}
