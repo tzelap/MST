@@ -35,13 +35,17 @@ public class MST {
 				
 			}
 			T.getArcs().merge(P);
-			
+		
 			L.append(T);
 			
 		}
-		
 		return L;
+		
+		
+		
+		
 	}
+	
 
 	/**
 	 * Executes the algorithm on a graph, starting with the initial partial tree list
@@ -50,7 +54,33 @@ public class MST {
 	 * @return Array list of all arcs that are in the MST - sequence of arcs is irrelevant
 	 */
 	public static ArrayList<PartialTree.Arc> execute(PartialTreeList ptlist) {
-		
+		ArrayList<PartialTree.Arc> component = new ArrayList<PartialTree.Arc>();
+		while(!(ptlist.size()<2)){
+			PartialTree PTX = ptlist.remove();
+			MinHeap<PartialTree.Arc>PQX = PTX.getArcs();
+			PartialTree.Arc  a = PQX.getMin();
+			Vertex v1 = a.v1;
+			Vertex v2 = a.v2;
+			while(v2.parent == v1.parent){
+				PTX.getArcs().deleteMin();
+				a = PTX.getArcs().getMin();
+				v1 = a.v1;
+				v2 = a.v2;
+			}
+			component.add(a);
+			PartialTree PTY = ptlist.remove();
+			while(PTY.getRoot()!= v2.parent){
+				PartialTree tmp = PTY;
+				PTY = ptlist.remove();
+				ptlist.append(tmp);
+				
+			}
+			MinHeap<PartialTree.Arc>PQY = PTY.getArcs();
+			PTX.merge(PTY);
+			PTX.getArcs().merge(PQY);
+			ptlist.append(PTX);
+			
+		}
 		/* COMPLETE THIS METHOD */
 
 		return null;
