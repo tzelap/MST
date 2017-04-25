@@ -57,45 +57,38 @@ public class MST {
 	 */
 	public static ArrayList<PartialTree.Arc> execute(PartialTreeList ptlist) {
 		ArrayList<PartialTree.Arc> component = new ArrayList<PartialTree.Arc>();
-		
+		int sum = 0;
 		while(ptlist.size()>1){
 			PartialTree PTX = ptlist.remove();
-			MinHeap<PartialTree.Arc>PQX = PTX.getArcs();
-			PartialTree.Arc  a = PQX.getMin();
+			
+			MinHeap<PartialTree.Arc> PQX = PTX.getArcs();
+			PartialTree.Arc  a = PQX.deleteMin();
 			Vertex v1 = a.v1;
 			Vertex v2 = a.v2;
-			MinHeap<PartialTree.Arc> temp = new MinHeap<PartialTree.Arc>();
-			temp.merge(PQX);
 			
 			while(v2.getRoot() == v1.getRoot()){
-				a = temp.deleteMin();
-				v1 = a.v1;
-				v2 = a.v2;
+					a = PQX.deleteMin();
+					v1 = a.v1;
+					v2 = a.v2;
 			}
-			component.add(a);
-			
-			
-			PartialTree PTY = new PartialTree(null);
-			
-			int count = ptlist.size();
-			while(count!=0){
-				PTY = ptlist.remove();
-				if(v2.getRoot() == PTY.getRoot()){
-					break;
-				}
-				ptlist.append(PTY);
-				count--;
-			}
-			
 		
-			MinHeap<PartialTree.Arc>PQY = PTY.getArcs();
+			component.add(a);
+			sum+=a.weight;
+			System.out.println(a.toString());
+			
+			PartialTree PTY = ptlist.removeTreeContaining(v2.getRoot());
+			
+			
+			
+			
 			PTX.merge(PTY);
-			PQX.merge(PQY);
+			System.out.println(PTX.toString());
 			ptlist.append(PTX);
 			
 		}
 		/* COMPLETE THIS METHOD */
-
-		return null;
+		System.out.println(sum);
+		return component;
 	}
+	
 }

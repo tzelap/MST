@@ -78,6 +78,17 @@ public class PartialTreeList implements Iterable<PartialTree> {
      */
     public PartialTree remove() 
     throws NoSuchElementException {
+    	if(rear == null){
+    		throw new NoSuchElementException();
+    	}
+    	if(size == 1){
+    		Node remove = rear;
+    		rear = null;
+    		size--;
+    		return remove.tree;
+    		
+    		
+    	}
     	Node remove = rear.next;
     	rear.next = rear.next.next;
     	size--;
@@ -99,8 +110,33 @@ public class PartialTreeList implements Iterable<PartialTree> {
     public PartialTree removeTreeContaining(Vertex vertex) 
     throws NoSuchElementException {
     		/* COMPLETE THIS METHOD */
+    	Node prev = rear;
+    	Node curr = rear.next;
+    	if(rear == null){
+    		throw new NoSuchElementException();	
+    	}
+    	if(size == 1){
+    		if (vertex == prev.tree.getRoot()){
+    			rear = null;
+    			size--;
+    			return prev.tree;
+    		}
+    		else throw new NoSuchElementException();
+    	}
     	
-    		return null;
+    	do{
+    		if(vertex == curr.tree.getRoot()){
+    			if(curr == rear){
+    				rear = prev;
+    			}
+    			prev.next = curr.next;
+    			size--;
+    			break;
+    		}
+    		prev = curr;
+    		curr = curr.next;
+    	}while(prev != rear);
+    	return curr.tree;
      }
     
     /**

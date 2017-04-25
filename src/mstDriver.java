@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import apps.MST;
@@ -24,19 +25,13 @@ public class mstDriver {
 		BufferedReader br = new BufferedReader(new FileReader(infile));
 		Graph graph = new Graph(infile);
 		PartialTreeList tmp = MST.initialize(graph);
-		//PartialTree pt = tmp.remove();
-		//MinHeap<PartialTree.Arc> M = new MinHeap<PartialTree.Arc>();
-		//M.merge(pt.getArcs());
-		int count = tmp.size();
-		PartialTree ptx = tmp.remove();
-		PartialTree pty = tmp.remove();
-		ptx.merge(pty);
-		ptx.getArcs().merge(pty.getArcs());
-		MinHeap<PartialTree.Arc> pqx = ptx.getArcs();
-		while(!pqx.isEmpty()){
-			System.out.println(pqx.deleteMin().toString());
-		}
+		ArrayList <PartialTree.Arc> al = MST.execute(tmp);
+		Iterator<Arc> it = al.iterator();
 		
+		while(it.hasNext()){
+			Arc kek = it.next();
+			System.out.println(kek.toString());
+		}
 	}
 
 }
