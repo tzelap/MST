@@ -3,6 +3,7 @@ package apps;
 import structures.*;
 import java.util.ArrayList;
 
+
 public class MST {
 	
 	/**
@@ -36,7 +37,6 @@ public class MST {
 				
 			}
 			T.getArcs().merge(P);
-		
 			L.append(T);
 			
 		}
@@ -58,7 +58,15 @@ public class MST {
 	public static ArrayList<PartialTree.Arc> execute(PartialTreeList ptlist) {
 		ArrayList<PartialTree.Arc> component = new ArrayList<PartialTree.Arc>();
 		int sum = 0;
+		
 		while(ptlist.size()>1){
+			/*
+			 * just to test some stuff
+			Iterator<PartialTree> it = ptlist.iterator();
+			while(it.hasNext()){
+				System.out.println(it.next().toString());
+			}
+			*/
 			PartialTree PTX = ptlist.remove();
 			
 			MinHeap<PartialTree.Arc> PQX = PTX.getArcs();
@@ -74,15 +82,15 @@ public class MST {
 		
 			component.add(a);
 			sum+=a.weight;
-			System.out.println(a.toString());
+			//System.out.println(a.toString());
 			
 			PartialTree PTY = ptlist.removeTreeContaining(v2.getRoot());
 			
-			
-			
+			//System.out.println(PTX.getRoot());
+			//System.out.println(PTY.getRoot());
 			
 			PTX.merge(PTY);
-			System.out.println(PTX.toString());
+			//System.out.println(PTX.toString());
 			ptlist.append(PTX);
 			
 		}

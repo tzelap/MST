@@ -136,6 +136,9 @@ public class PartialTreeList implements Iterable<PartialTree> {
     		prev = curr;
     		curr = curr.next;
     	}while(prev != rear);
+    	if(vertex!=curr.tree.getRoot()){
+    		throw new NoSuchElementException();
+    	}
     	return curr.tree;
      }
     
